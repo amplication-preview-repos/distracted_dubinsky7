@@ -1,0 +1,64 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Challenge {
+  createdAt   DateTime                 @default(now())
+  difficulty  EnumChallengeDifficulty?
+  id          String                   @id @default(cuid())
+  successRate Float?
+  typeField   EnumChallengeTypeField?
+  updatedAt   DateTime                 @updatedAt
+}
+
+model Alarm {
+  createdAt   DateTime  @default(now())
+  id          String    @id @default(cuid())
+  snoozeLimit Int?
+  sound       String?
+  time        DateTime?
+  updatedAt   DateTime  @updatedAt
+  volume      Int?
+}
+
+model UserProfile {
+  alarmHistory Json?
+  createdAt    DateTime @default(now())
+  id           String   @id @default(cuid())
+  preferences  Json?
+  updatedAt    DateTime @updatedAt
+  username     String?
+}
+
+model Notification {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  isRead    Boolean?
+  message   String?
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+enum EnumChallengeDifficulty {
+  Option1
+}
+
+enum EnumChallengeTypeField {
+  Option1
+}
